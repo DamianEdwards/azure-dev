@@ -61,6 +61,7 @@ type manager struct {
 	client               devcentersdk.DevCenterClient
 	deploymentsService   azapi.Deployments
 	deploymentOperations azapi.DeploymentOperations
+	portalUrlBase        string
 }
 
 // NewManager creates a new devcenter manager
@@ -69,12 +70,14 @@ func NewManager(
 	client devcentersdk.DevCenterClient,
 	deploymentsService azapi.Deployments,
 	deploymentOperations azapi.DeploymentOperations,
+	portalUrlBase string,
 ) Manager {
 	return &manager{
 		config:               config,
 		client:               client,
 		deploymentsService:   deploymentsService,
 		deploymentOperations: deploymentOperations,
+		portalUrlBase:        string(portalUrlBase),
 	}
 }
 
@@ -221,6 +224,7 @@ func (m *manager) Deployment(
 		resourceGroupId.SubscriptionId,
 		resourceGroupId.Name,
 		*latestDeployment.Name,
+		m.portalUrlBase,
 	), nil
 }
 

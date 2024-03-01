@@ -235,7 +235,7 @@ func (m *Manager) CredentialForCurrentUser(
 				if options.TenantID == "" {
 					return newAzdCredential(m.publicClient, &accounts[i], m.cloud), nil
 				} else {
-					newAuthority := "https://login.microsoftonline.com/" + options.TenantID
+					newAuthority := m.cloud.Configuration.ActiveDirectoryAuthorityHost + options.TenantID
 
 					newOptions := make([]public.Option, 0, len(m.publicClientOptions)+1)
 					newOptions = append(newOptions, m.publicClientOptions...)
@@ -379,7 +379,8 @@ func (m *Manager) newCredentialFromClientSecret(
 	options := &azidentity.ClientSecretCredentialOptions{
 		ClientOptions: policy.ClientOptions{
 			Transport: m.httpClient,
-			// TODO: Inject client options?
+			// TODO: Inject client options instead? this can be done if we're OK
+			// using the default user agent string.
 			Cloud: m.cloud.Configuration,
 		},
 	}
@@ -409,7 +410,8 @@ func (m *Manager) newCredentialFromClientCertificate(
 	options := &azidentity.ClientCertificateCredentialOptions{
 		ClientOptions: policy.ClientOptions{
 			Transport: m.httpClient,
-			// TODO: Inject client options?
+			// TODO: Inject client options instead? this can be done if we're OK
+			// using the default user agent string.
 			Cloud: m.cloud.Configuration,
 		},
 	}
@@ -434,7 +436,8 @@ func (m *Manager) newCredentialFromFederatedTokenProvider(
 	options := &azidentity.ClientAssertionCredentialOptions{
 		ClientOptions: policy.ClientOptions{
 			Transport: m.httpClient,
-			// TODO: Inject client options?
+			// TODO: Inject client options instead? this can be done if we're OK
+			// using the default user agent string.
 			Cloud: m.cloud.Configuration,
 		},
 	}
